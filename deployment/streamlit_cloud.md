@@ -10,7 +10,7 @@
 
 ```toml
 # .streamlit/secrets.toml (don't commit this)
-GROQ_API_KEY = "your_groq_key"
+GEMINI_API_KEY = "your_gemini_key"
 OSS_DEVICE = "cpu"
 OSS_QUANTIZATION = "none"
 SAFETY_MODE = "strict"

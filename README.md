@@ -94,7 +94,7 @@ pip install -r requirements.txt
 
 # Set up environment
 cp .env.example .env
-# Edit .env — add your GROQ_API_KEY
+# Edit .env — add your GEMINI_API_KEY
 
 # Run app
 streamlit run app.py
@@ -106,7 +106,7 @@ Open http://localhost:8501
 
 ```bash
 cp .env.example .env
-# Add GROQ_API_KEY to .env
+# Add GEMINI_API_KEY to .env
 
 docker-compose up --build
 ```
@@ -116,7 +116,7 @@ docker-compose up --build
 1. Push repo to GitHub
 2. Visit share.streamlit.io
 3. Connect repo, set `app.py` as entry point
-4. Add `GROQ_API_KEY` in Secrets settings
+4. Add `GEMINI_API_KEY` in Secrets settings
 
 ---
 
@@ -126,7 +126,7 @@ Copy `.env.example` to `.env`:
 
 ```bash
 # Required for hosted assistant
-GROQ_API_KEY=gsk_...        # Get free at console.groq.com
+GEMINI_API_KEY=AIza...        # Get free at aistudio.google.com/apikey
 
 # OSS model settings
 OSS_DEVICE=auto              # auto | cpu | cuda | mps
@@ -141,7 +141,7 @@ LANGFUSE_SECRET_KEY=sk-...
 ```
 
 **Getting a free Groq API key:**
-1. Visit [console.groq.com](https://console.groq.com)
+1. Visit [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
 2. Sign up (free, no credit card)
 3. Create an API key
 4. Add to `.env`
@@ -249,7 +249,7 @@ Tracked per request:
 ```bash
 # The deployment/hf_spaces_README.md becomes the Space README
 # Required Space secrets:
-# GROQ_API_KEY, OSS_DEVICE=cpu, OSS_QUANTIZATION=none
+# GEMINI_API_KEY, OSS_DEVICE=cpu, OSS_QUANTIZATION=none
 ```
 
 ### Cost Analysis

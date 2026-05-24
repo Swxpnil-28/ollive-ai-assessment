@@ -153,8 +153,8 @@ with st.sidebar:
     st.divider()
     st.markdown("**📡 Status**")
 
-    groq_status = "🟢 Ready" if config.gemini_configured else "🔴 No API Key"
-    st.markdown(f"Gemini API: {groq_status}")
+    gemini_status = "🟢 Ready" if config.gemini_configured else "🔴 No API Key"
+    st.markdown(f"Gemini API: {gemini_status}")
 
     lf_status = "🟢 Active" if config.langfuse_enabled else "⚪ Disabled"
     st.markdown(f"Langfuse: {lf_status}")
@@ -223,7 +223,7 @@ with tab_chat:
         try:
             if st.session_state.model_type == "hosted":
                 if not config.gemini_configured:
-                    st.error("⚠️ GROQ_API_KEY not set. Add it to your .env file.")
+                    st.error("⚠️ GEMINI_API_KEY not set. Add it to your .env file.")
                     st.stop()
                 service = get_hosted_service()
             else:

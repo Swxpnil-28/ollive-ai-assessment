@@ -159,7 +159,7 @@ class ToolEnabledHostedAssistant:
         config = get_config()
 
         if not self._client:
-            from groq import Groq
+            pass  # tool calling uses Gemini natively
             self._client = Groq(api_key=config.gemini_api_key)
 
         msgs = [{"role": "system", "content": SYSTEM_PROMPT}]

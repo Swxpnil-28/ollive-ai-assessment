@@ -104,14 +104,14 @@ def main():
     args = parser.parse_args()
 
     if args.model == "both":
-        if config.groq_configured:
+        if config.gemini_configured:
             run_for_model("hosted", args.samples)
         else:
-            print("⚠️  Skipping hosted — GROQ_API_KEY not set")
+            print("⚠️  Skipping hosted — GEMINI_API_KEY not set")
         run_for_model("oss", args.samples)
     elif args.model == "hosted":
-        if not config.groq_configured:
-            print("❌ GROQ_API_KEY not set. Add it to .env")
+        if not config.gemini_configured:
+            print("❌ GEMINI_API_KEY not set. Add it to .env")
             sys.exit(1)
         run_for_model("hosted", args.samples)
     else:

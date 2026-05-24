@@ -20,6 +20,6 @@ def test_langfuse_disabled_without_keys():
     assert not cfg.langfuse_enabled
 
 
-def test_groq_configured():
-    cfg = AppConfig(groq_api_key="test_key")
-    assert cfg.groq_configured
+def test_gemini_configured():
+    cfg = AppConfig(gemini_api_key="test_key")
+    assert cfg.gemini_configured

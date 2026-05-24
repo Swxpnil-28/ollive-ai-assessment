@@ -6,7 +6,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
       - OSS_MODEL_NAME=${OSS_MODEL_NAME:-Qwen/Qwen2.5-0.5B-Instruct}
       - OSS_DEVICE=${OSS_DEVICE:-cpu}
       - OSS_QUANTIZATION=${OSS_QUANTIZATION:-none}

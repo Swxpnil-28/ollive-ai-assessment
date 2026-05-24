@@ -14,12 +14,12 @@ license: mit
 
 A mini AI inference & evaluation platform comparing:
 - **🌿 OSS**: Qwen2.5-0.5B-Instruct (local)
-- **⚡ Hosted**: Llama 3.3 70B via Groq API
+- **⚡ Hosted**: Gemini 2.5 Flash
 
 ## Setup on HF Spaces
 
 1. Fork this Space
 2. Add secrets in Space Settings:
-   - `GROQ_API_KEY` — Get free at console.groq.com
+   - `GEMINI_API_KEY` — Get free at aistudio.google.com/apikey
    - `OSS_DEVICE` = `cpu` (Spaces zero GPU tier)
    - `OSS_QUANTIZATION` = `none` (CPU mode)
