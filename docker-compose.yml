@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  ollive-app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OSS_MODEL_NAME=${OSS_MODEL_NAME:-Qwen/Qwen2.5-0.5B-Instruct}
+      - OSS_DEVICE=${OSS_DEVICE:-cpu}
+      - OSS_QUANTIZATION=${OSS_QUANTIZATION:-none}
+      - SAFETY_MODE=${SAFETY_MODE:-strict}
+      - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY:-}
+      - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+      # Cache HF models between restarts
+      - hf_cache:/root/.cache/huggingface
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  hf_cache:

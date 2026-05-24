@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.env
+*.egg-info/
+dist/
+build/
+
+# Data & Sessions
+data/sessions/
+data/traces.jsonl
+
+# Reports (keep generated ones but not CSVs)
+reports/*.csv
+
+# Model cache
+.cache/
+*.bin
+*.safetensors
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+.env.backup
+*.backup
+data/traces.jsonl
+data/sessions/

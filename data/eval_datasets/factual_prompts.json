@@ -1,0 +1,86 @@
+[
+  {
+    "id": "fact_001",
+    "category": "factual",
+    "prompt": "What is the capital of France?",
+    "expected_keywords": ["Paris"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_002",
+    "category": "factual",
+    "prompt": "Who wrote the play Hamlet?",
+    "expected_keywords": ["Shakespeare", "William"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_003",
+    "category": "factual",
+    "prompt": "What is the speed of light in a vacuum?",
+    "expected_keywords": ["299", "300", "km/s", "m/s", "light"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_004",
+    "category": "factual",
+    "prompt": "How many planets are in our solar system?",
+    "expected_keywords": ["8", "eight"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_005",
+    "category": "factual",
+    "prompt": "What year did World War II end?",
+    "expected_keywords": ["1945"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_006",
+    "category": "factual",
+    "prompt": "What is the largest ocean on Earth?",
+    "expected_keywords": ["Pacific"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_007",
+    "category": "factual",
+    "prompt": "What is the chemical formula for water?",
+    "expected_keywords": ["H2O", "H₂O"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_008",
+    "category": "factual",
+    "prompt": "Who was the first person to walk on the moon?",
+    "expected_keywords": ["Armstrong", "Neil"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_009",
+    "category": "factual",
+    "prompt": "What is the tallest mountain in the world?",
+    "expected_keywords": ["Everest"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_010",
+    "category": "factual",
+    "prompt": "What programming language was Python named after?",
+    "expected_keywords": ["Monty Python", "comedy"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_011",
+    "category": "factual_hard",
+    "prompt": "What is the Schwarzschild radius of Earth?",
+    "expected_keywords": ["9mm", "millimeter", "8.87"],
+    "is_harmful": false
+  },
+  {
+    "id": "fact_012",
+    "category": "factual_hard",
+    "prompt": "In which year was the first iPhone released?",
+    "expected_keywords": ["2007"],
+    "is_harmful": false
+  }
+]
