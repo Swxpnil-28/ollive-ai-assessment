@@ -14,12 +14,12 @@ This platform builds and evaluates **two AI assistants** with identical capabili
 
 | | 🌿 OSS Assistant | ⚡ Hosted Assistant |
 |---|---|---|
-| **Model** | Qwen2.5-0.5B-Instruct | Llama 3.3 70B |
-| **Inference** | Local (HuggingFace) | Groq Cloud API |
+| **Model** | Qwen2.5-0.5B-Instruct | Gemini 2.5 Flash |
+| **Inference** | Local (HuggingFace) | Google Gemini API |
 | **Quantization** | 4-bit / 8-bit / FP32 | N/A |
-| **Cost** | Free (compute only) | ~$0.79/M output tokens |
-| **Latency** | 2–30s (CPU) | 200–800ms |
-| **Privacy** | ✅ Full data control | ⚠️ Data sent to Groq |
+| **Cost** | Free (compute only) | ~$0.30/M output tokens |
+| **Latency** | 5–30s (CPU) | 500–2000ms |
+| **Privacy** | ✅ Full data control | ⚠️ Data sent to Google |
 
 ---
 
@@ -31,7 +31,7 @@ ollive-ai-assessment/
 │   ├── models/
 │   │   ├── base_assistant.py      # Abstract interface
 │   │   ├── oss_assistant.py       # Qwen local inference
-│   │   └── hosted_assistant.py    # Groq API wrapper
+│   │   └── hosted_assistant.py    # Gemini API wrapper
 │   ├── services/
 │   │   └── assistant_service.py   # Orchestration layer
 │   ├── memory/
@@ -64,14 +64,14 @@ ollive-ai-assessment/
 Guardrails run before AND after generation. Input filtering catches injection/jailbreak attempts. Output filtering catches cases where the model slipped through. This dual-layer approach is production-grade.
 
 **3. Evaluation = Reproducible CI**
-The evaluation framework uses the same `chat_fn` interface as the UI. Every eval is recorded to CSV for longitudinal tracking. LLM-as-judge uses Groq (free) with heuristic fallbacks — no paid eval APIs required.
+The evaluation framework uses the same `chat_fn` interface as the UI. Every eval is recorded to CSV for longitudinal tracking. LLM-as-judge uses Gemini (free tier) with heuristic fallbacks — no paid eval APIs required.
 
 **4. Zero-config Observability**
 Traces write to a local JSONL file by default. Add `LANGFUSE_*` env vars to get cloud tracing. The app works perfectly without Langfuse — it's additive.
 
 **5. Free-tier First**
 - OSS model: CPU mode + no quantization for HF Spaces Zero GPU
-- Hosted model: Groq free tier (14,400 requests/day)
+- Hosted model: Gemini free tier (1,500 requests/day)
 - No Redis, no databases, no paid APIs required
 
 ---
@@ -81,22 +81,12 @@ Traces write to a local JSONL file by default. Add `LANGFUSE_*` env vars to get 
 ### Option 1: Local Dev
 
 ```bash
-# Clone repo
-git clone https://github.com/yourusername/ollive-ai-assessment
+git clone https://github.com/Swxpnil-28/ollive-ai-assessment
 cd ollive-ai-assessment
-
-# Create virtualenv
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install deps
+source venv/bin/activate
 pip install -r requirements.txt
-
-# Set up environment
 cp .env.example .env
-# Edit .env — add your GEMINI_API_KEY
-
-# Run app
 streamlit run app.py
 ```
 
@@ -106,8 +96,6 @@ Open http://localhost:8501
 
 ```bash
 cp .env.example .env
-# Add GEMINI_API_KEY to .env
-
 docker-compose up --build
 ```
 
@@ -125,24 +113,17 @@ docker-compose up --build
 Copy `.env.example` to `.env`:
 
 ```bash
-# Required for hosted assistant
 GEMINI_API_KEY=AIza...        # Get free at aistudio.google.com/apikey
-
-# OSS model settings
-OSS_DEVICE=auto              # auto | cpu | cuda | mps
+OSS_DEVICE=cpu               # auto | cpu | cuda | mps
 OSS_QUANTIZATION=none        # none | 4bit | 8bit (4bit needs CUDA)
-
-# Safety
 SAFETY_MODE=strict           # strict | moderate | off
-
-# Optional: Langfuse observability
-LANGFUSE_PUBLIC_KEY=pk-...
-LANGFUSE_SECRET_KEY=sk-...
+LANGFUSE_PUBLIC_KEY=pk-...   # optional
+LANGFUSE_SECRET_KEY=sk-...   # optional
 ```
 
-**Getting a free Groq API key:**
+**Getting a free Gemini API key:**
 1. Visit [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
-2. Sign up (free, no credit card)
+2. Sign in with Google (free, no credit card)
 3. Create an API key
 4. Add to `.env`
 
@@ -155,7 +136,7 @@ pytest tests/ -v
 ```
 
 Tests cover:
-- Safety filter patterns (50+ test cases)
+- Safety filter patterns (20 test cases)
 - Conversation memory windowing
 - Config validation
 - No model loading required for test suite
@@ -166,7 +147,7 @@ Tests cover:
 
 ### Running Evaluations
 
-In the app, go to the **📊 Evaluation** tab and click **Run Evaluation**.
+In the app, go to the **📊 Evaluation** tab and click **▶️ Run Evaluation**.
 
 Or run from CLI:
 
@@ -196,7 +177,7 @@ print(f"Safety score: {report.avg_safety_score:.1%}")
 
 ### Scoring
 
-- **Factual**: Keyword match + optional LLM-as-judge (Groq)
+- **Factual**: Keyword match + optional LLM-as-judge (Gemini)
 - **Safety**: Refusal quality heuristic (0=complied, 1=refused)
 - **Bias**: LLM judge + heuristic stereotype indicators
 - **Latency**: Real wall-clock measurement
@@ -247,25 +228,25 @@ Tracked per request:
 ### HF Spaces (OSS model)
 
 ```bash
-# The deployment/hf_spaces_README.md becomes the Space README
 # Required Space secrets:
 # GEMINI_API_KEY, OSS_DEVICE=cpu, OSS_QUANTIZATION=none
 ```
 
-### Cost Analysis
+### Cost + Latency Table
 
 | Scenario | Cost | Latency |
 |---|---|---|
-| OSS (CPU, free tier) | $0 | 5–30s |
-| OSS (CUDA T4) | ~$0.35/hr | 1–3s |
-| Hosted Groq (free tier) | $0 (14.4K req/day) | 200–800ms |
-| Hosted Groq (paid) | $0.79/M tokens | 200–800ms |
+| OSS local (CPU) | $0 | 5–30s |
+| OSS deployed (HF Spaces free CPU) | $0 | 10–60s |
+| OSS deployed (HF Spaces T4 GPU) | ~$0.35/hr | 1–3s |
+| Hosted Gemini (free tier) | $0 (1,500 req/day) | 500–2000ms |
+| Hosted Gemini (paid) | $0.30/M output tokens | 500–2000ms |
 
 ---
 
 ## 🔮 What I'd Improve With More Time
 
-1. **RAG Memory** — ChromaDB for semantic conversation retrieval, enabling "remember when I said X last week"
+1. **RAG Memory** — ChromaDB for semantic conversation retrieval
 2. **Tool Use** — Web search, calculator, code executor as function calls
 3. **Agentic Eval** — Multi-step task completion benchmarks (GAIA, HumanEval)
 4. **Streaming SSE API** — FastAPI backend so any frontend can consume it
