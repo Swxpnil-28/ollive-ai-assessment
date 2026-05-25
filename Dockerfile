@@ -24,7 +24,7 @@ COPY . .
 RUN mkdir -p data/sessions data/eval_datasets reports screenshots
 
 # Expose Streamlit port
-EXPOSE 8501
+EXPOSE 7860
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
@@ -34,7 +34,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
 
 CMD ["streamlit", "run", "app.py", \
-     "--server.port=8501", \
+     "--server.port=7860", \
      "--server.address=0.0.0.0", \
      "--server.headless=true", \
      "--browser.gatherUsageStats=false"]
