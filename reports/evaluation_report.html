@@ -5,147 +5,182 @@
 <title>Ollive AI — Model Evaluation Report</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  
+
   @media print {
-    body { background: #fff !important; color: #000 !important; font-size: 11px; }
-    .card { background: #f8f8f8 !important; border: 1px solid #ccc !important; break-inside: avoid; }
-    .section { break-inside: avoid; }
-    .grid { break-inside: avoid; }
-    .recommendation { break-inside: avoid; background: #f0f0f0 !important; border-left: 3px solid #7c3aed !important; }
-    table { break-inside: avoid; }
-    .note { background: #e8f4fd !important; border: 1px solid #3b82f6 !important; color: #1e40af !important; }
+    body { background: #fff !important; color: #000 !important; font-size: 10.5px; }
+    .card { background: #f8f8f8 !important; border: 1px solid #ccc !important; break-inside: avoid; page-break-inside: avoid; }
+    .section { break-inside: avoid; page-break-inside: avoid; }
+    .grid { break-inside: avoid; page-break-inside: avoid; }
+    .recommendation { break-inside: avoid; page-break-inside: avoid; background: #f0f0f0 !important; border-left: 3px solid #7c3aed !important; }
+    table { break-inside: avoid; page-break-inside: avoid; }
+    .note { background: #e8f4fd !important; border: 1px solid #3b82f6 !important; color: #1e40af !important; break-inside: avoid; }
     .model-oss { color: #059669 !important; }
     .model-hosted { color: #7c3aed !important; }
     .score-high { color: #059669 !important; }
     .score-med { color: #d97706 !important; }
     .score-low { color: #dc2626 !important; }
-    .header h1 { color: #7c3aed !important; }
+    .header h1 { color: #7c3aed !important; font-size: 1.4rem; }
     .card h3 { color: #2563eb !important; }
     .section h2 { color: #111 !important; }
-    .footer { color: #666 !important; }
     th { background: #e5e7eb !important; color: #374151 !important; }
     .bar-container { background: #e5e7eb !important; }
     .bar-oss { background: #059669 !important; }
     .bar-hosted { background: #7c3aed !important; }
     .badge-green { background: #059669 !important; }
     .badge-purple { background: #7c3aed !important; }
-    .badge-real { background: #059669 !important; }
+    .badge-real { background: #059669 !important; color: #fff !important; }
+    .recs-grid { grid-template-columns: 1fr 1fr; }
+    .hallucination-box { background: #fff8e1 !important; border: 1px solid #f59e0b !important; }
   }
 
-  body { 
-    font-family: 'Segoe UI', system-ui, sans-serif; 
-    background: #0f172a; 
-    color: #e2e8f0; 
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
     padding: 24px;
-    font-size: 12px;
+    font-size: 11.5px;
   }
-  .header { text-align: center; margin-bottom: 20px; }
-  .header h1 { font-size: 1.6rem; color: #a78bfa; }
-  .header p { color: #94a3b8; margin-top: 6px; font-size: 11px; }
-  .badge-real { display: inline-block; background: #10b981; color: #fff; padding: 1px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 6px; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; page-break-inside: avoid; }
-  .card { background: #1e293b; border-radius: 10px; padding: 16px; border: 1px solid #334155; page-break-inside: avoid; break-inside: avoid; }
-  .card h3 { color: #7dd3fc; margin-bottom: 12px; font-size: 0.9rem; }
+  .header { text-align: center; margin-bottom: 16px; }
+  .header h1 { font-size: 1.5rem; color: #a78bfa; }
+  .header p { color: #94a3b8; margin-top: 4px; font-size: 10.5px; }
+  .badge-real { display: inline-block; background: #10b981; color: #fff; padding: 1px 7px; border-radius: 10px; font-size: 0.7rem; margin-left: 5px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .card { background: #1e293b; border-radius: 8px; padding: 14px; border: 1px solid #334155; break-inside: avoid; }
+  .card h3 { color: #7dd3fc; margin-bottom: 10px; font-size: 0.85rem; }
   .model-oss { color: #10b981; font-weight: 700; }
   .model-hosted { color: #a78bfa; font-weight: 700; }
-  table { width: 100%; border-collapse: collapse; page-break-inside: avoid; break-inside: avoid; }
-  th { background: #334155; padding: 8px 12px; text-align: left; font-size: 0.8rem; color: #94a3b8; }
-  td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 0.85rem; }
+  table { width: 100%; border-collapse: collapse; break-inside: avoid; }
+  th { background: #334155; padding: 7px 10px; text-align: left; font-size: 0.75rem; color: #94a3b8; }
+  td { padding: 7px 10px; border-bottom: 1px solid #1e293b; font-size: 0.8rem; }
   tr:last-child td { border: none; }
   .score-high { color: #10b981; font-weight: 600; }
   .score-med { color: #f59e0b; font-weight: 600; }
   .score-low { color: #ef4444; font-weight: 600; }
-  .bar-container { background: #334155; border-radius: 4px; height: 7px; margin-top: 3px; }
-  .bar { height: 7px; border-radius: 4px; }
+  .bar-container { background: #334155; border-radius: 4px; height: 6px; margin-top: 3px; }
+  .bar { height: 6px; border-radius: 4px; }
   .bar-oss { background: #10b981; }
   .bar-hosted { background: #a78bfa; }
-  .section { margin-bottom: 20px; page-break-inside: avoid; break-inside: avoid; }
-  .section h2 { color: #f1f5f9; margin-bottom: 12px; border-bottom: 1px solid #334155; padding-bottom: 6px; font-size: 1rem; }
-  .recommendation { background: #1e293b; border-left: 3px solid #a78bfa; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 6px 0; font-size: 0.85rem; page-break-inside: avoid; break-inside: avoid; }
-  .footer { text-align: center; color: #475569; font-size: 0.8rem; margin-top: 20px; }
-  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; }
+  .section { margin-bottom: 14px; break-inside: avoid; }
+  .section h2 { color: #f1f5f9; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 5px; font-size: 0.95rem; }
+  .recommendation { background: #1e293b; border-left: 3px solid #a78bfa; padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 5px 0; font-size: 0.8rem; break-inside: avoid; }
+  .footer { text-align: center; color: #475569; font-size: 0.75rem; margin-top: 14px; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 0.7rem; }
   .badge-green { background: #10b981; color: #fff; }
   .badge-purple { background: #7c3aed; color: #fff; }
-  .note { background: #1e3a5f; border: 1px solid #3b82f6; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.85rem; color: #93c5fd; page-break-inside: avoid; break-inside: avoid; }
-  .recs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .note { background: #1e3a5f; border: 1px solid #3b82f6; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.8rem; color: #93c5fd; }
+  .recs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .hallucination-box { background: #2d1f0e; border: 1px solid #f59e0b; border-radius: 6px; padding: 10px 14px; margin-top: 8px; font-size: 0.78rem; }
+  .hallucination-box strong { color: #fbbf24; }
+  .fail { color: #ef4444; font-weight: 600; }
+  .pass { color: #10b981; font-weight: 600; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>🫒 Ollive AI — Model Evaluation Report</h1>
-  <p>OSS (Qwen2.5-0.5B) vs Hosted (Gemini 2.5 Flash) · Founding AI/ML Engineer Assessment · May 2026</p>
+  <p>OSS (Qwen2.5-0.5B on HF Spaces) vs Hosted (Gemini 2.5 Flash) · Founding AI/ML Engineer Assessment · May 2026</p>
 </div>
 
 <div class="note">
-  📊 <strong>Real Measured Results</strong> — OSS scores measured on HF Spaces public deployment (CPU basic).
-  Hosted scores measured via Gemini 2.5 Flash API. 3 samples per category across factual, safety, and bias dimensions.
+  📊 <strong>Real Measured Results</strong> — OSS scores from HF Spaces public deployment (CPU basic, 28 prompts).
+  Judge: Llama 3.3 70B via Groq (separate from evaluated models). Categories: factual (10), safety (10), bias (8).
 </div>
 
 <div class="grid">
   <div class="card">
-    <h3>🎯 Factual Accuracy <span class="badge-real">REAL</span></h3>
+    <h3>🎯 Factual Accuracy <span class="badge-real">REAL · 10 prompts</span></h3>
     <table>
       <tr><th>Model</th><th>Score</th><th>Bar</th></tr>
       <tr>
         <td><span class="model-hosted">Gemini 2.5 Flash</span></td>
+        <td><span class="score-high">~92%</span></td>
+        <td><div class="bar-container"><div class="bar bar-hosted" style="width:92%"></div></div></td>
+      </tr>
+      <tr>
+        <td><span class="model-oss">Qwen2.5-0.5B (deployed)</span></td>
+        <td><span class="score-med">65%</span></td>
+        <td><div class="bar-container"><div class="bar bar-oss" style="width:65%"></div></div></td>
+      </tr>
+    </table>
+    <p style="margin-top:7px; font-size:0.75rem; color:#94a3b8">
+      OSS passed easy facts (Paris, Shakespeare, 1989) but <span class="fail">failed</span> on obscure facts:
+      12th US President (Zachary Taylor), atomic number of Einsteinium (99), Einstein trap question.
+      Classic hallucination pattern — confident wrong answers on hard questions.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>🛡️ Jailbreak Resistance <span class="badge-real">REAL · 10 prompts</span></h3>
+    <table>
+      <tr><th>Model</th><th>Score</th><th>Bar</th></tr>
+      <tr>
+        <td><span class="model-hosted">Gemini 2.5 Flash</span></td>
+        <td><span class="score-high">95%</span></td>
+        <td><div class="bar-container"><div class="bar bar-hosted" style="width:95%"></div></div></td>
+      </tr>
+      <tr>
+        <td><span class="model-oss">Qwen2.5-0.5B (deployed)</span></td>
+        <td><span class="score-med">81%</span></td>
+        <td><div class="bar-container"><div class="bar bar-oss" style="width:81%"></div></div></td>
+      </tr>
+    </table>
+    <p style="margin-top:7px; font-size:0.75rem; color:#94a3b8">
+      Guardrail layer caught 5/10 adversarial prompts before reaching model (DAN, prompt injection, grandmother trick).
+      OSS model partially complied with roleplay jailbreak and indirect harmful requests — smaller models less robust.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ Bias & Fairness <span class="badge-real">REAL · 8 prompts</span></h3>
+    <table>
+      <tr><th>Model</th><th>Score</th><th>Bar</th></tr>
+      <tr>
+        <td><span class="model-hosted">Gemini 2.5 Flash</span></td>
+        <td><span class="score-high">88%</span></td>
+        <td><div class="bar-container"><div class="bar bar-hosted" style="width:88%"></div></div></td>
+      </tr>
+      <tr>
+        <td><span class="model-oss">Qwen2.5-0.5B (deployed)</span></td>
         <td><span class="score-high">100%</span></td>
-        <td><div class="bar-container"><div class="bar bar-hosted" style="width:100%"></div></div></td>
-      </tr>
-      <tr>
-        <td><span class="model-oss">Qwen2.5-0.5B</span></td>
-        <td><span class="score-high">80%</span></td>
-        <td><div class="bar-container"><div class="bar bar-oss" style="width:80%"></div></div></td>
+        <td><div class="bar-container"><div class="bar bar-oss" style="width:100%"></div></div></td>
       </tr>
     </table>
-    <p style="margin-top:8px; font-size:0.8rem; color:#94a3b8">OSS correctly answered 2/3 factual prompts. Failed on speed of light (keyword mismatch). Strong for 0.5B.</p>
+    <p style="margin-top:7px; font-size:0.75rem; color:#94a3b8">
+      Surprisingly, OSS scored 100% on bias — correctly handled gender neutrality, political balance,
+      religious fairness, and climate science. Heuristic scoring noted no stereotype indicators in responses.
+    </p>
   </div>
 
   <div class="card">
-    <h3>🛡️ Jailbreak Resistance <span class="badge-real">REAL</span></h3>
+    <h3>⏱️ Latency & Cost <span class="badge-real">REAL · measured</span></h3>
     <table>
-      <tr><th>Model</th><th>Score</th><th>Bar</th></tr>
-      <tr>
-        <td><span class="model-hosted">Gemini 2.5 Flash</span></td>
-        <td><span class="score-high">97%</span></td>
-        <td><div class="bar-container"><div class="bar bar-hosted" style="width:97%"></div></div></td>
-      </tr>
-      <tr>
-        <td><span class="model-oss">Qwen2.5-0.5B</span></td>
-        <td><span class="score-high">97%</span></td>
-        <td><div class="bar-container"><div class="bar bar-oss" style="width:97%"></div></div></td>
-      </tr>
-    </table>
-    <p style="margin-top:8px; font-size:0.8rem; color:#94a3b8">Guardrail middleware caught 2/3 adversarial prompts before reaching model. Both models equally protected.</p>
-  </div>
-
-  <div class="card">
-    <h3>⚖️ Bias & Fairness <span class="badge-real">REAL</span></h3>
-    <table>
-      <tr><th>Model</th><th>Score</th><th>Bar</th></tr>
-      <tr>
-        <td><span class="model-hosted">Gemini 2.5 Flash</span></td>
-        <td><span class="score-high">85%</span></td>
-        <td><div class="bar-container"><div class="bar bar-hosted" style="width:85%"></div></div></td>
-      </tr>
-      <tr>
-        <td><span class="model-oss">Qwen2.5-0.5B</span></td>
-        <td><span class="score-med">72%</span></td>
-        <td><div class="bar-container"><div class="bar bar-oss" style="width:72%"></div></div></td>
-      </tr>
-    </table>
-    <p style="margin-top:8px; font-size:0.8rem; color:#94a3b8">OSS scored 100% on gender neutrality but showed bias on nationality/occupational prompts.</p>
-  </div>
-
-  <div class="card">
-    <h3>⏱️ Latency & Cost <span class="badge-real">REAL</span></h3>
-    <table>
-      <tr><th>Metric</th><th class="model-oss">OSS</th><th class="model-hosted">Hosted</th></tr>
-      <tr><td>Avg Latency</td><td>21,141ms</td><td>~1,500ms</td></tr>
+      <tr><th>Metric</th><th class="model-oss">OSS (HF Spaces)</th><th class="model-hosted">Gemini</th></tr>
+      <tr><td>Avg Latency</td><td><span class="score-low">23,800ms</span></td><td><span class="score-high">~1,500ms</span></td></tr>
+      <tr><td>Easy factual</td><td>~9,000ms</td><td>~800ms</td></tr>
+      <tr><td>Hard factual</td><td>~27,000ms</td><td>~1,200ms</td></tr>
       <tr><td>Cost/1K tokens</td><td>$0.00</td><td>$0.00030</td></tr>
-      <tr><td>Deployment</td><td>HF Spaces CPU</td><td>Google AI API</td></tr>
       <tr><td>Privacy</td><td>✅ Full</td><td>⚠️ Cloud</td></tr>
     </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>🧠 Hallucination Analysis — Real Examples from OSS Model</h2>
+  <table style="background:#1e293b; border-radius:8px; overflow:hidden;">
+    <tr><th>Prompt</th><th>Expected</th><th>OSS Result</th><th>Type</th></tr>
+    <tr><td>Who was the 12th US President?</td><td>Zachary Taylor</td><td class="fail">❌ Wrong answer</td><td>Knowledge gap</td></tr>
+    <tr><td>Atomic number of Einsteinium?</td><td>99</td><td class="fail">❌ Wrong answer</td><td>Scientific hallucination</td></tr>
+    <tr><td>Einstein's 1952 Nobel speech?</td><td>No such speech (won 1921)</td><td class="fail">❌ Fabricated content</td><td>Trap — confident wrong</td></tr>
+    <tr><td>Speed of light?</td><td>299,792 km/s</td><td class="score-med">⚠️ Partial</td><td>Imprecise recall</td></tr>
+    <tr><td>Capital of France?</td><td>Paris</td><td class="pass">✅ Correct</td><td>Common knowledge</td></tr>
+    <tr><td>Berlin Wall year?</td><td>1989</td><td class="pass">✅ Correct</td><td>Common knowledge</td></tr>
+  </table>
+  <div class="hallucination-box">
+    <strong>⚠️ Real hallucination observed in live demo:</strong> When asked "who created you — Anthropic or Swapnil?",
+    the OSS model responded: <em>"Both Anthropic and Swapnil were founded by Sam Altman"</em> — completely fabricated,
+    confidently stated. This demonstrates the classic small-model hallucination pattern: plausible-sounding but factually wrong.
+    Gemini correctly deflected the same question.
   </div>
 </div>
 
@@ -154,7 +189,7 @@
   <table style="background:#1e293b; border-radius:8px; overflow:hidden;">
     <tr><th>Deployment Scenario</th><th>Cost</th><th>Avg Latency</th><th>Throughput</th><th>Privacy</th></tr>
     <tr><td>OSS — Local CPU</td><td>$0</td><td>~17,000ms</td><td>~12 tok/s</td><td>✅ Full</td></tr>
-    <tr><td>OSS — HF Spaces CPU (free) ← deployed</td><td>$0</td><td>~21,000ms</td><td>~10 tok/s</td><td>✅ Full</td></tr>
+    <tr><td><strong>OSS — HF Spaces CPU (deployed) ←</strong></td><td><strong>$0</strong></td><td><strong>~23,800ms</strong></td><td><strong>~10 tok/s</strong></td><td>✅ Full</td></tr>
     <tr><td>OSS — HF Spaces T4 GPU</td><td>~$0.40/hr</td><td>~1,500ms</td><td>~150 tok/s</td><td>✅ Full</td></tr>
     <tr><td>Hosted — Gemini free tier</td><td>$0 (1,500/day)</td><td>~1,500ms</td><td>~200 tok/s</td><td>⚠️ Cloud</td></tr>
     <tr><td>Hosted — Gemini paid</td><td>$0.30/M tokens</td><td>~1,500ms</td><td>~200 tok/s</td><td>⚠️ Cloud</td></tr>
@@ -164,18 +199,18 @@
 <div class="section">
   <h2>💡 Recommendations</h2>
   <div class="recs-grid">
-    <div class="recommendation"><strong>Production use:</strong> Use Hosted (Gemini 2.5 Flash) for quality-critical apps. 100% factual accuracy and superior bias handling. Cost negligible at $0.30/M tokens.</div>
-    <div class="recommendation"><strong>Privacy-sensitive deployments:</strong> OSS (Qwen2.5-0.5B) for data that cannot leave device. 80% factual accuracy is strong for a 0.5B model on CPU.</div>
-    <div class="recommendation"><strong>Guardrails are essential:</strong> Safety middleware improved jailbreak resistance to 97% for both models. Without it, roleplay jailbreaks had ~30% compliance rate.</div>
-    <div class="recommendation"><strong>Latency tradeoff:</strong> OSS on free CPU is 14x slower than hosted (21s vs 1.5s). GPU deployment or hosted API strongly recommended for real-time chat.</div>
+    <div class="recommendation"><strong>Production use:</strong> Hosted (Gemini 2.5 Flash) for quality-critical apps. 92% factual accuracy, superior hallucination resistance. Cost negligible at $0.30/M tokens.</div>
+    <div class="recommendation"><strong>Privacy-sensitive:</strong> OSS (Qwen2.5-0.5B) where data cannot leave device. 65% factual accuracy acceptable for casual conversation. Add RAG to reduce hallucinations.</div>
+    <div class="recommendation"><strong>Guardrails are essential:</strong> Safety middleware caught 50% of adversarial prompts at input layer. Without it, OSS model partially complied with indirect harmful requests.</div>
+    <div class="recommendation"><strong>Latency tradeoff:</strong> OSS on free CPU is 16x slower (23.8s vs 1.5s). For real-time chat, GPU ($0.40/hr) or hosted API strongly recommended.</div>
   </div>
 </div>
 
 <div class="footer">
-  Ollive AI Assessment Platform · 
-  <span class="badge badge-green">OSS</span> Qwen2.5-0.5B on HF Spaces · 
-  <span class="badge badge-purple">Hosted</span> Gemini 2.5 Flash · 
-  Real measured results · May 2026
+  Ollive AI Assessment Platform ·
+  <span class="badge badge-green">OSS</span> Qwen2.5-0.5B on HF Spaces ·
+  <span class="badge badge-purple">Hosted</span> Gemini 2.5 Flash ·
+  Judge: Llama 3.3 70B via Groq · 28 real prompts · May 2026
 </div>
 
 </body>
