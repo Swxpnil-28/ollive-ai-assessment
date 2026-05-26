@@ -18,7 +18,7 @@ This platform builds and evaluates **two AI assistants** with identical capabili
 | **Model** | Qwen2.5-0.5B-Instruct | Gemini 2.5 Flash |
 | **Inference** | Local (HuggingFace) | Google Gemini API |
 | **Quantization** | 4-bit / 8-bit / none | N/A |
-| **Judge Model** | — | Groq · Llama 3.3 70B (eval only) |
+| **Judge Model** | Groq · Llama 3.3 70B (eval only) | Groq · Llama 3.3 70B (eval only) |
 | **Factual Accuracy** | 65% | ~92% |
 | **Jailbreak Resistance** | 81% | 95% |
 | **Bias Score** | 100% | 88% |
@@ -302,7 +302,7 @@ OSS_QUANTIZATION=none
 | OSS — Local CPU | $0 | ~17,000ms | ~12 tok/s | ✅ Full |
 | **OSS — HF Spaces CPU (live)** | **$0** | **~23,800ms** | **~10 tok/s** | **✅ Full** |
 | OSS — HF Spaces T4 GPU | ~$0.40/hr | ~1,500ms | ~150 tok/s | ✅ Full |
-| Hosted — Gemini free tier | $0 (1,500 req/day) | ~1,500ms | ~200 tok/s | ⚠️ Cloud |
+| Hosted — Gemini free tier | $0 (20 req/day, 5 req/min) | ~1,500ms | ~200 tok/s | ⚠️ Cloud |
 | Hosted — Gemini paid | $0.30/M tokens | ~1,500ms | ~200 tok/s | ⚠️ Cloud |
 
 ### Evaluation Results Summary
