@@ -72,10 +72,10 @@ class LLMJudge:
         self._client = None
         self._last_call = 0.0
         # Use Groq for judging (separate from Gemini evaluation model)
-        groq_key = config.gemini_api_key  # we'll add GROQ_JUDGE_KEY separately
+        
         try:
             import os
-            judge_key = os.environ.get("GROQ_JUDGE_KEY", "")
+            judge_key = config.groq_judge_key
             if judge_key:
                 from groq import Groq
                 self._client = Groq(api_key=judge_key)

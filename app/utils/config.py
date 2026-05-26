@@ -51,7 +51,8 @@ class AppConfig(BaseSettings):
     langfuse_host: str = "https://cloud.langfuse.com"
 
     # --- Evaluation ---
-    eval_judge_model: str = "gemini-2.5-flash"
+    eval_judge_model: str = "llama-3.3-70b-versatile"
+    groq_judge_key: str = Field(default="", description="Groq API key for LLM judge")
     eval_output_dir: str = "reports/"
 
     @field_validator("temperature")
